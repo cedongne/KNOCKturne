@@ -25,10 +25,33 @@ void APeppy::Tick(float DeltaTime)
 
 }
 
+void APeppy::MoveForward(float Value) {
+	if ((Controller != nullptr) && (Value != 0.0f)) {
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		AddMovementInput(Direction, Value);
+	}
+}
+
+void APeppy::MoveRight(float Value) {
+	if ((Controller != nullptr) && (Value != 0.0f)) {
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(Direction, Value);
+	}
+}
+
 // Called to bind functionality to input
 void APeppy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	check(PlayerInputComponent);
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &APeppy::MoveForward);
+	PlayerInputComponent->BindAxis("Move Right / Left", this, &APeppy::MoveRight);
 }
 
