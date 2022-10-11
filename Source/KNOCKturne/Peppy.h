@@ -24,11 +24,11 @@ protected:
 	void MoveRight(float value);
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* SpringArm = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* Camera = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	UCameraComponent* Camera;
 
 public:	
 	// Called every frame
