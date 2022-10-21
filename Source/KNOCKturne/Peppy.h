@@ -23,6 +23,11 @@ protected:
 	void MoveForward(float value);
 	void MoveRight(float value);
 
+	void SetDestination();
+
+protected:
+	bool isMove;
+
 public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	USpringArmComponent* SpringArm;

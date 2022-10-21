@@ -14,7 +14,6 @@ APeppy::APeppy()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	
-
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -28,6 +27,8 @@ APeppy::APeppy()
 	SpringArm->bInheritRoll = false;
 	SpringArm->bInheritYaw = false;
 	SpringArm->bDoCollisionTest = false;
+
+	isMove = false;
 
 }
 
@@ -47,6 +48,10 @@ void APeppy::Tick(float DeltaTime)
 
 void APeppy::MoveForward(float Value) {
 	if ((Controller != nullptr) && (Value != 0.0f)) {
+		if (isMove) {
+			GetMovementComponent()->StopMovementImmediately();
+			isMove = false;
+		}
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
@@ -57,12 +62,20 @@ void APeppy::MoveForward(float Value) {
 
 void APeppy::MoveRight(float Value) {
 	if ((Controller != nullptr) && (Value != 0.0f)) {
+		if (isMove) {
+			GetMovementComponent()->StopMovementImmediately();
+			isMove = false;
+		}
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void APeppy::SetDestination() {
+	isMove = true;
 }
 
 // Called to bind functionality to input
@@ -73,5 +86,6 @@ void APeppy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &APeppy::MoveForward);
 	PlayerInputComponent->BindAxis("Move Right / Left", this, &APeppy::MoveRight);
+	PlayerInputComponent->BindAction("SetDestination", IE_Pressed, this, &APeppy::SetDestination);
 }
 
