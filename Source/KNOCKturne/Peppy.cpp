@@ -28,6 +28,11 @@ APeppy::APeppy()
 	SpringArm->bInheritYaw = false;
 	SpringArm->bDoCollisionTest = false;
 
+	InteractionCollider = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionCollider"));
+	InteractionCollider->SetupAttachment(RootComponent);
+	InteractionCollider->SetSphereRadius(96.0f);
+
+
 	isMove = false;
 
 }

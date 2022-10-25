@@ -35,6 +35,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* Camera;
 
+	UPROPERTY(VisibleAnywhere, Category = Interaction)
+	USphereComponent* InteractionCollider;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
