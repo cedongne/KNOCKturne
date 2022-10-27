@@ -19,11 +19,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-protected:
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
 	void MoveForward(float value);
 	void MoveRight(float value);
 
 	void SetDestination();
+
+	void CheckInteraction();
+
+	UFUNCTION()
+	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 protected:
 	bool isMove;
@@ -35,14 +49,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere, Category = Interaction)
-	USphereComponent* InteractionCollider;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Interaction)
+	UCapsuleComponent* InteractionCollider;
 
 };
