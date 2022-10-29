@@ -25,7 +25,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool CanInteraction;
+
+public:
+	UFUNCTION()
+	void SetCanInteraction(bool Flag);
 		
 };

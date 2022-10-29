@@ -10,7 +10,7 @@ UNPCComponent::UNPCComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	CanInteraction = true;
+	CanInteraction = false;
 	// ...
 }
 
@@ -31,5 +31,9 @@ void UNPCComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UNPCComponent::SetCanInteraction(bool Flag) {
+	CanInteraction = Flag;
 }
 
