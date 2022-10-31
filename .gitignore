@@ -67,7 +67,11 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Saved folder
-Saved/*
+Saved/*Autosaves
+Saved/*Collections
+Saved/*Crashes
+Saved/*Logs
+Saved/*WorldPartition
 
 # All of assets
 Content/Assets/*
