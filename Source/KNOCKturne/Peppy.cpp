@@ -28,6 +28,12 @@ APeppy::APeppy()
 	SpringArm->bInheritYaw = false;
 	SpringArm->bDoCollisionTest = false;
 
+	InteractionCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractionCollider"));
+	InteractionCollider->SetupAttachment(RootComponent);
+	InteractionCollider->SetCapsuleRadius(96.0f);
+	InteractionCollider->SetCapsuleHalfHeight(48.0f);
+
+
 	isMove = false;
 
 }
@@ -36,6 +42,9 @@ APeppy::APeppy()
 void APeppy::BeginPlay()
 {
 	Super::BeginPlay();
+
+//	InteractionCollider->OnComponentBeginOverlap.AddDynamic(this, &APeppy::OnOverlapBegin);
+//	InteractionCollider->OnComponentEndOverlap.AddDynamic(this, &APeppy::OnOverlapEnd);
 	
 }
 
@@ -76,6 +85,42 @@ void APeppy::MoveRight(float Value) {
 
 void APeppy::SetDestination() {
 	isMove = true;
+}
+
+
+void APeppy::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (OtherActor && (OtherActor != this) && OtherComp) {
+		if (OtherActor->ActorHasTag("NPC")) {
+			UE_LOG(LogTemp, Warning, TEXT("NPC overlapped"));
+		}
+	}
+}
+
+void APeppy::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+	if (OtherActor && (OtherActor != this) && OtherComp) {
+		if (OtherActor->ActorHasTag("NPC")) {
+			UE_LOG(LogTemp, Warning, TEXT("NPC out of range"));
+		}
+	}
+}
+
+void APeppy::CheckInteraction() {
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		GetActorLocation(),
+		GetActorLocation(),
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel1,
+		FCollisionShape::MakeSphere(100.f),
+		Params
+	);
+
+	if (bResult) {
+		if (HitResult.GetActor()) {
+		}
+	}
 }
 
 // Called to bind functionality to input
